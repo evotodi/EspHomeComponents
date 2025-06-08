@@ -2,8 +2,7 @@
 
 #include "esphome/core/component.h"
 #include "esphome/components/text_sensor/text_sensor.h"
-
-// extern int esp_sleep_get_wakeup_cause();
+#include "esp_sleep.h"
 
 namespace esphome {
     namespace wake_reason {
@@ -11,8 +10,8 @@ namespace esphome {
         public:
             void setup() override;
             void dump_config() override;
-
-        protected:
+            float get_setup_priority() const override;
+            std::string unique_id() override;
         };
-    } // namespace empty_text_sensor
+    } // namespace wake_reason
 } // namespace esphome

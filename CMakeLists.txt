@@ -8,6 +8,7 @@ set(ARDUINO_LIBS "C:/Users/Justin/.platformio/packages/framework-arduinoespressi
 
 include_directories("${ESPHOME_DIR}")
 include_directories("${ARDUINO_LIBS}")
+include_directories("C:/Users/Justin/.platformio/packages/framework-espidf/components/esp_hw_support/include")
 
 # Get OneWire
 FetchContent_Declare(OneWire

@@ -6,7 +6,8 @@ namespace esphome {
         static const char *TAG = "wake_reason";
 
         void WakeReason::setup() {
-            int reason = esp_sleep_get_wakeup_cause();
+            int reason;
+            reason = esp_sleep_get_wakeup_cause();
             ESP_LOGD(TAG, "Wakeup reason value: %d", reason);
             switch (reason) {
                 case 1:
@@ -65,7 +66,15 @@ namespace esphome {
         }
 
         void WakeReason::dump_config() {
-            ESP_LOGCONFIG(TAG, "Wake Reason");
+            LOG_TEXT_SENSOR("", "Wake Reason Text Sensor", this);
+        }
+
+        float WakeReason::get_setup_priority() const {
+            return setup_priority::DATA;
+        }
+
+        std::string WakeReason::unique_id() {
+            return get_mac_address() + "-wake-reason";
         }
     }
 }
