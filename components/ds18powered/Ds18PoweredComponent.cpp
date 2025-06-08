@@ -5,25 +5,25 @@ namespace esphome {
         static const char *TAG = "ds18powered";
 
         void Ds18PoweredComponent::setup() {
-            ESP_LOGCONFIG(TAG, "Setting up Dallas temperature sensor...");
+            ESP_LOGD(TAG, "Setting up Dallas temperature sensor...");
             this->_pwrOutput->set_state(true);
             delay(10);
             this->_oneWire = new OneWire(this->_owPin->get_pin());
             this->_sensors.setOneWire(this->_oneWire);
 
-            ESP_LOGCONFIG(TAG, "Locating devices...");
+            ESP_LOGD(TAG, "Locating devices...");
             this->_sensors.begin();
-            ESP_LOGCONFIG(TAG, "Found %d devices", this->_sensors.getDeviceCount());
+            ESP_LOGD(TAG, "Found %d devices", this->_sensors.getDeviceCount());
 
             if (!this->_sensors.getAddress(this->_tempSensor, 0)) {
-                ESP_LOGCONFIG(TAG, "Unable to find address for Device 0");
+                ESP_LOGD(TAG, "Unable to find address for Device 0");
                 this->_foundSensor = false;
                 return;
             }
 
-            ESP_LOGCONFIG(TAG, "Device 0 Address: %s", getDs18b20AddressName().c_str());
+            ESP_LOGD(TAG, "Device 0 Address: %s", getDs18b20AddressName().c_str());
             this->_sensors.setResolution(this->_tempSensor, this->_dsResolution);
-            ESP_LOGCONFIG(TAG, "Device 0 Resolution: %d", this->_sensors.getResolution(this->_tempSensor));
+            ESP_LOGD(TAG, "Device 0 Resolution: %d", this->_sensors.getResolution(this->_tempSensor));
         }
 
         void Ds18PoweredComponent::loop() {
