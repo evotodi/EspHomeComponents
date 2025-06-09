@@ -2,7 +2,6 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import binary_sensor
 from esphome.const import (
-    ICON_POWER,
     DEVICE_CLASS_PROBLEM,
 )
 
@@ -19,7 +18,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(CONF_BATT_ID): cv.use_id(Batt18650StatsComponent),
 
         cv.Optional(CONF_LOW_SENSOR): binary_sensor.binary_sensor_schema(
-            icon=ICON_POWER,
+            icon="mdi:battery-check",
             device_class=DEVICE_CLASS_PROBLEM,
         )
     }
