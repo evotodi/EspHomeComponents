@@ -26,8 +26,10 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_VOLT_SENSOR): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             accuracy_decimals=2,
+            icon="mdi:battery-charging-100",
             device_class=DEVICE_CLASS_VOLTAGE,
-            state_class=STATE_CLASS_MEASUREMENT
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC
         ),
 
         cv.Optional(CONF_CHARGE_SENSOR): sensor.sensor_schema(
