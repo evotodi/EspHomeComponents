@@ -1,0 +1,80 @@
+esphome:
+  platformio_options:
+    upload_speed: 921600
+    includes:
+      - <Arduino.h>
+      - <OneWire.h>
+      - <DallasTemperature.h>
+    libraries:
+      - milesburton/DallasTemperature@^3.9.1
+  on_boot:
+    priority: 750
+    then:
+      - output.turn_on: owpwr
+      - output.turn_on: status_led1
+  on_shutdown:
+    - priority: 750
+      then:
+        - output.turn_off: owpwr
+        - output.turn_off: status_led1
+
+external_components:
+  - source: github://evotodi/EspHomeComponents
+    refresh: 0s
+    components: [ batt18650stats, ds18powered, wake_reason ]
+
+deep_sleep:
+  id: deep_sleep1
+  run_duration:
+    default: 15s
+    gpio_wakeup_reason: 5min
+  sleep_duration: 10min
+  wakeup_pin: GPIO13
+  wakeup_pin_mode: KEEP_AWAKE
+
+output:
+  - platform: gpio
+    pin: GPIO22
+    id: owpwr
+  - platform: gpio
+    pin: GPIO2
+    id: status_led1
+
+batt18650stats:
+  id: batt1
+  adc_pin: GPIO36
+  cal_pin: GPIO0
+  led_output: status_led1
+  reads: 10
+  v_min: 2.8
+  v_max: 4.15
+  low_charge: 20
+
+ds18powered:
+  id: ds18p1
+  ow_pin: GPIO21
+  pwr_output: owpwr
+
+sensor:
+  - platform: ds18powered
+    temp_sensor:
+      name: temperature
+      unit_of_measurement: °F
+      accuracy_decimals: 2
+      filters:
+        - lambda: return x * (9.0/5.0) + 32.0;
+
+  - platform: batt18650stats
+    battery_voltage:
+      name: battery voltage
+    battery_level:
+      name: battery level
+
+binary_sensor:
+  - platform: batt18650stats
+    batt_low_sensor:
+      name: battery status
+
+text_sensor:
+  - platform: wake_reason
+    name: wake reason
