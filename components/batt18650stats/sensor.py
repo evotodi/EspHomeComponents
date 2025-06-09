@@ -6,7 +6,8 @@ from esphome.const import (
     UNIT_PERCENT,
     STATE_CLASS_MEASUREMENT,
     DEVICE_CLASS_BATTERY,
-    DEVICE_CLASS_VOLTAGE
+    DEVICE_CLASS_VOLTAGE,
+    ENTITY_CATEGORY_DIAGNOSTIC
 )
 
 from . import CONF_BATT_ID, Batt18650StatsComponent
@@ -14,8 +15,8 @@ from . import CONF_BATT_ID, Batt18650StatsComponent
 CODEOWNERS = ["@evotodi"]
 DEPENDENCIES = ["batt18650stats"]
 
-CONF_VOLT_SENSOR = "voltage_sensor"
-CONF_CHARGE_SENSOR = "charge_sensor"
+CONF_VOLT_SENSOR = "battery_voltage"
+CONF_CHARGE_SENSOR = "battery_level"
 
 
 CONFIG_SCHEMA = cv.Schema(
@@ -25,16 +26,16 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_VOLT_SENSOR): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             accuracy_decimals=2,
-            icon="mdi:car-battery",
             device_class=DEVICE_CLASS_VOLTAGE,
             state_class=STATE_CLASS_MEASUREMENT
         ),
 
         cv.Optional(CONF_CHARGE_SENSOR): sensor.sensor_schema(
             unit_of_measurement=UNIT_PERCENT,
-            accuracy_decimals=2,
+            accuracy_decimals=0,
             device_class=DEVICE_CLASS_BATTERY,
-            state_class=STATE_CLASS_MEASUREMENT
+            state_class=STATE_CLASS_MEASUREMENT,
+            entity_category=ENTITY_CATEGORY_DIAGNOSTIC
         ),
     }
 )
